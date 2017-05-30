@@ -1,3 +1,4 @@
+from __future__ import print_function
 from nutsflow import _
 from nutsflow import *
 
