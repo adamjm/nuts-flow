@@ -39,7 +39,7 @@ def interleave(*iterables):
     :rtype: iterator
     """
     pending = len(iterables)
-    nexts = itt.cycle(iter(it).next for it in iterables)
+    nexts = itt.cycle(iter(it).__next__ for it in iterables)
     while pending:
         try:
             for next in nexts:
@@ -252,7 +252,7 @@ class PrefetchIterator(t.Thread):
             self.queue.put(item)
         self.queue.put(None)
 
-    def next(self):
+    def __next__(self):
         """
         Return next element from pre-fetch iterator.
 

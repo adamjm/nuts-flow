@@ -11,16 +11,16 @@ import time
 import pickle as pickle
 import os.path as osp
 import itertools as itt
-import iterfunction as itf
+from . import iterfunction as itf
 import random as rnd
 import multiprocessing as mp
 import collections as cl
 
-from base import Nut
-from common import as_tuple, as_set, console
-from factory import nut_processor
-from function import Identity
-from sink import Consume, Collect
+from .base import Nut
+from .common import as_tuple, as_set, console
+from .factory import nut_processor
+from .function import Identity
+from .sink import Consume, Collect
 from nutsflow.common import timestr
 
 
@@ -676,7 +676,7 @@ def GroupBy(iterable, keycol=lambda x: x, nokey=False):
     for e in iterable:
         key = keycol(e) if isfunc else e[keycol]
         groups[key].append(e)
-    return groups.itervalues() if nokey else groups.iteritems()
+    return iter(groups.values()) if nokey else iter(groups.items())
 
 
 @nut_processor
@@ -717,7 +717,7 @@ def GroupBySorted(iterable, keycol=lambda x: x, nokey=False):
     isfunc = hasattr(keycol, '__call__')
     key = keycol if isfunc else lambda x: x[keycol]
     groupiter = itt.groupby(iterable, key)
-    return itt.imap(lambda (k, v): v, groupiter) if nokey else groupiter
+    return itt.imap(lambda k_v: k_v[1], groupiter) if nokey else groupiter
 
 
 @nut_processor
@@ -740,7 +740,7 @@ def Clone(iterable, n):
     :rtype: generator
     """
     for e in iterable:
-        for _ in xrange(n):
+        for _ in range(n):
             yield e
 
 

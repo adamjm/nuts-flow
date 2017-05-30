@@ -128,7 +128,7 @@ class Range(NutSource):
         :return: Range of integers.
         :rtype: iterable over int
         """
-        self.iter = iter(xrange(*args, **kwargs))
+        self.iter = iter(range(*args, **kwargs))
 
     def __iter__(self):
         """Return iterator over numbers."""
@@ -183,7 +183,7 @@ class ReadCSV(NutSource):
         self.csvfile = open(filepath, 'rb')
         self.columns = columns if columns is None else as_tuple(columns)
         self.fmtfunc = fmtfunc
-        for _ in xrange(skipheader):
+        for _ in range(skipheader):
             next(self.csvfile)
         itf.take(self.csvfile, skipheader)
         stripped = (r.strip() for r in self.csvfile)
@@ -207,5 +207,5 @@ class ReadCSV(NutSource):
         cols = self.columns
         for row in self.reader:
             row = [row[i] for i in cols] if cols else row
-            row = map(self.fmtfunc, row)
+            row = list(map(self.fmtfunc, row))
             yield tuple(row) if len(row) > 1 else row[0]

@@ -9,10 +9,10 @@ import math
 import itertools as itt
 import collections as cl
 
-from base import NutSink
-from factory import nut_sink
-from common import as_tuple
-from iterfunction import nth, consume, length, take
+from .base import NutSink
+from .factory import nut_sink
+from .common import as_tuple
+from .iterfunction import nth, consume, length, take
 
 
 @nut_sink
@@ -171,7 +171,7 @@ def ArgMax(iterable, key=lambda x: x, default=None, retvalue=False):
     :rtype: object | tuple
     """
     try:
-        i, v = max(enumerate(iterable), key=lambda (i, e): key(e))
+        i, v = max(enumerate(iterable), key=lambda i_e: key(i_e[1]))
         return (i, v) if retvalue else i
     except Exception:
         return default
@@ -209,7 +209,7 @@ def ArgMin(iterable, key=lambda x: x, default=None, retvalue=False):
     :rtype: object | tuple
     """
     try:
-        i, v = min(enumerate(iterable), key=lambda (i, e): key(e))
+        i, v = min(enumerate(iterable), key=lambda i_e1: key(i_e1[1]))
         return (i, v) if retvalue else i
     except Exception:
         return default
@@ -378,11 +378,11 @@ def CountValues(iterable, relative=False):
     :rtype: dict
     """
     cnts = dict(cl.Counter(iterable))
-    if not relative or not cnts.values():
+    if not relative or not list(cnts.values()):
         return cnts
     max_cnt = max(cnts.values())
     n = float(max_cnt) if max_cnt else 1.0
-    return {k: v / n for k, v in cnts.iteritems()}
+    return {k: v / n for k, v in cnts.items()}
 
 
 @nut_sink
@@ -495,9 +495,9 @@ class WriteCSV(NutSink):
         """Write elements of iterable to file"""
         cols = self.columns
         iterable = iter(iterable)
-        for _ in xrange(self.skipheader):
+        for _ in range(self.skipheader):
             next(iterable)
         for row in iterable:
             row = row if hasattr(row, '__iter__') else [row]
             row = [row[i] for i in cols] if cols else row
-            self.writer.writerow(map(self.fmtfunc, row))
+            self.writer.writerow(list(map(self.fmtfunc, row)))

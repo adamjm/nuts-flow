@@ -2,7 +2,7 @@
 .. module:: function
    :synopsis: Nuts that perform functions on single stream elements.
 """
-from __future__ import print_function
+
 
 import time
 import threading
