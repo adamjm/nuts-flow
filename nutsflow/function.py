@@ -7,8 +7,8 @@ from __future__ import print_function
 import time
 import threading
 
-from common import console
-from factory import nut_function, NutFunction
+from nutflow.common import console
+from nutflow.factory import nut_function, NutFunction
 
 
 @nut_function

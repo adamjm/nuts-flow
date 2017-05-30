@@ -5,7 +5,7 @@
 """
 
 import itertools as itt
-import Queue as q
+import queue as q
 import threading as t
 import collections as cl
 

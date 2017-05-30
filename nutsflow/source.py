@@ -6,11 +6,11 @@
 import csv
 
 import itertools as itt
-import iterfunction as itf
+import nutsflow.iterfunction as itf
 
-from base import NutSource
-from factory import nut_source
-from common import as_tuple
+from nutsflow.base import NutSource
+from nutsflow.factory import nut_source
+from nutsflow.common import as_tuple
 
 
 @nut_source
