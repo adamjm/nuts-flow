@@ -3,7 +3,7 @@
    :synopsis: Unit tests for common module
 """
 
-from __future__ import print_function
+
 from nutsflow.common import (sec_to_hms, timestr, Redirect, as_tuple, as_set,
                              as_list, console)
 

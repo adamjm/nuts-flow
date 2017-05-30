@@ -64,7 +64,7 @@ def test_Counter():
     counter = Counter('cnt')
     assert counter.value == 0
 
-    xrange(10) >> counter >> Consume()
+    range(10) >> counter >> Consume()
     assert counter.value == 10
     assert str(counter) == 'cnt = 10'
 
@@ -72,13 +72,13 @@ def test_Counter():
     assert counter.value == 0
 
     counter = Counter('cnt', filterfunc=lambda x: x < 3, value=1)
-    xrange(10) >> counter >> Consume()
+    range(10) >> counter >> Consume()
     assert counter.value == 4
 
 
 def test_Sleep():
     start = time.time()
-    assert xrange(10) >> Sleep(0.01) >> Collect() == range(10)
+    assert range(10) >> Sleep(0.01) >> Collect() == list(range(10))
     duration = time.time() - start
     assert 0.05 < duration < 0.2
 
@@ -108,7 +108,7 @@ def test_Print():
     assert out.getvalue() == '1\n2\n3\n'
 
     with Redirect() as out:
-        xrange(10) >> Print(every_n=3) >> Consume()
+        range(10) >> Print(every_n=3) >> Consume()
     assert out.getvalue() == '2\n5\n8\n'
 
     with Redirect() as out:

@@ -65,7 +65,7 @@ def test_Dedupe():
 
     data = [(1, 'a'), (2, 'a'), (3, 'b')]
     expected = [(1, 'a'), (3, 'b')]
-    assert data >> Dedupe(key=lambda (x, y): y) >> Collect() == expected
+    assert data >> Dedupe(key=lambda x_y: x_y[1]) >> Collect() == expected
     assert data >> Dedupe(_[1]) >> Collect() == expected
 
 
@@ -273,7 +273,7 @@ def test_GroupBy():
 def test_GroupBySorted():
     @nut_sink
     def KV2List(iterable):
-        return iterable >> Map(lambda (k, es): (k, list(es))) >> Collect()
+        return iterable >> Map(lambda k_es: (k_es[0], list(k_es[1]))) >> Collect()
 
     @nut_sink
     def V2List(iterable):
@@ -305,7 +305,7 @@ def test_Clone():
 
 
 def test_Shuffle():
-    data = range(50)
+    data = list(range(50))
     assert data >> Shuffle(100) >> Collect() != data
     assert data >> Shuffle(100) >> Collect(set) == set(data)
 
@@ -336,7 +336,7 @@ def test_MapMulti():
 
 def test_MapPar():
     assert [-1, -2, -3] >> MapPar(abs) >> Collect() == [1, 2, 3]
-    data = range(1000)
+    data = list(range(1000))
     assert data >> MapPar(_) >> MapPar(_) >> Collect() == data
 
 
@@ -366,7 +366,7 @@ def test_Cache():
         [1] >> Cache(storage='memory') >> Consume()
     assert str(ex.value).startswith('Unsupported storage')
 
-    data = range(100)
+    data = list(range(100))
     with Cache() as cache:
         it = iter(data)
         assert it >> cache >> Collect() == data
@@ -375,7 +375,7 @@ def test_Cache():
 
 def test_PrintProgress():
     with Redirect() as out:
-        numbers = range(3)
+        numbers = list(range(3))
         numbers >> PrintProgress(numbers, 0) >> Consume()
     expected = \
         '\rprogress: 0% \rprogress: 50% \rprogress: 100% \rprogress: 100% \n'
