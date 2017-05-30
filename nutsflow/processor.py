@@ -8,7 +8,7 @@ import shutil
 import os
 import time
 
-import cPickle as pickle
+import pickle as pickle
 import os.path as osp
 import itertools as itt
 import iterfunction as itf
